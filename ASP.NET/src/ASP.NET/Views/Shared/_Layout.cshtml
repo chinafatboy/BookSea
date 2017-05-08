@@ -1,0 +1,85 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+</head>
+<body  style="overflow-x:hidden;">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle"
+                        data-toggle="collapse" data-target="#navbar-collapse"
+                        aria-expanded="false">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-action="Index" class="menu">首页</a></li>
+                    <li><a href="#" class="menu">图书排行榜</a></li>
+                    <li><a href="#" class="menu">新书预售</a></li>
+                    <li><a href="#" class="menu">关于我们</a></li>
+                </ul>
+                <div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a asp-action="register">
+                                <span class="glyphicon glyphicon-user"></span>
+                                注册
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="login">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                登录
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div>
+        @RenderBody()
+    </div>
+    <footer class="footer">
+        <div class="footer-top">
+            <p>Copyrights © 2017 Bootstrap 响 应 式  网 站  | 书 海 版 权 所 有</p>
+        </div>
+        <div class="footer-bottom">
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="glyphicon glyphicon-phone-alt">
+                            &nbsp; 联 系 我 们
+                        </i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="glyphicon glyphicon-map-marker">
+                            &nbsp; 公 司 地 址
+                        </i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="glyphicon glyphicon-question-sign">
+                            &nbsp; 服 务 声 明
+                        </i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+        <script src="/lib/jquery/dist/jquery.js"></script>
+        <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+</body>
+</html>
