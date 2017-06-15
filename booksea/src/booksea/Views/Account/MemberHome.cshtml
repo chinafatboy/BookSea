@@ -1,0 +1,229 @@
+﻿@model booksea.Models.MemberHomeModel
+@{
+    ViewBag.Title = "会员中心";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.contBuy = "/";
+    int cartRow = 0;
+    int faviRow = 0;
+    //WebGrid orderList = new WebGrid(Model.Orders.OrderByDescending(m=>m.orderTime), rowsPerPage: 3, canPage: true);
+}
+@section Scripts
+{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        function modiInfo() {
+            var val = document.getElementById("btnModiInfo").value;
+            if (val == "修改信息") {
+                setEditable();
+            }
+            else {
+                //1。测试用户名是否唯一。如果不唯一则提示并中断提交
+                //var newName = document.getElementById("memberName").value;
+                //if (newName.trim().length == 0)
+                //    alert("用户名不能为空！");
+                //else {
+                var xmlhttp = new XMLHttpRequest();
+                var curUserId = document.getElementById("userId").value;
+                //xmlhttp.open("get", "/Account/testMemberName?newName=" + newName + "&curUserId=" + curUserId, false);
+                //xmlhttp.send(); //这里用同步方式发送了XMLHttpRequest调用
+                //if (xmlhttp.responseText.trim() == "0") {
+                //2。提交有效信息，更新成功
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                        if (xmlhttp.responseText.trim() == "1" || xmlhttp.responseText.trim() == "0")
+                            setReadonly();//3。恢复到只读状态
+                        else
+                            alert("信息提交不成功，请重新尝试！");
+                }
+                xmlhttp.open("post", "/Account/updateMemberInfo", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send("memberId=" + curUserId +
+                    "&memberMobile=" + document.getElementById("memberMobile").value +
+                    "&memberHome=" + document.getElementById("memberHome").value +
+                    "&memberOffice=" + document.getElementById("memberOffice").value +
+                    "&memberQQ=" + document.getElementById("memberQQ").value
+                );
+                //}
+                //else {
+                //    alert("新用户名已被别人使用！请更换。");
+                //}
+            }
+        }
+        function setEditable() {
+            //document.getElementById("memberName").style.border = "solid";
+            //document.getElementById("memberName").readOnly = false;
+            document.getElementById("memberMobile").style.border = "solid";
+            document.getElementById("memberMobile").readOnly = false;
+            document.getElementById("memberHome").style.border = "solid";
+            document.getElementById("memberHome").readOnly = false;
+            document.getElementById("memberOffice").style.border = "solid";
+            document.getElementById("memberOffice").readOnly = false;
+            //document.getElementById("memberEmail").style.border = "solid";
+            //document.getElementById("memberEmail").readOnly = false;
+            document.getElementById("memberQQ").style.border = "solid";
+            document.getElementById("memberQQ").readOnly = false;
+            document.getElementById("btnModiInfo").value = "提交信息";
+        }
+        function modiPWD() {
+            document.getElementById("pwdBlk").style.display = "block";
+        }
+        function setReadonly() {
+            //document.getElementById("memberName").style.border = "none";
+            //$("#memberName").css("border", "none");//JQuery写法，与上一行等价
+            //document.getElementById("memberName").readOnly = true;
+            //$("#memberName").readOnly = true;
+            document.getElementById("memberMobile").style.border = "none";
+            document.getElementById("memberMobile").readOnly = true;
+            document.getElementById("memberHome").style.border = "none";
+            document.getElementById("memberHome").readOnly = true;
+            document.getElementById("memberOffice").style.border = "none";
+            document.getElementById("memberOffice").readOnly = true;
+            //document.getElementById("memberEmail").style.border = "none";
+            //document.getElementById("memberEmail").readOnly = true;
+            document.getElementById("memberQQ").style.border = "none";
+            document.getElementById("memberQQ").readOnly = true;
+            document.getElementById("btnModiInfo").value = "修改信息";
+        }
+    </script>
+}
+
+
+
+
+<style type="text/css">
+    .grid {
+        margin: 2px;
+        border-collapse: collapse;
+        width: 730px;
+    }
+
+    .head {
+        background-color: #E8E8E8;
+        font-weight: bold;
+        color: #FFF;
+    }
+
+    .grid th, .grid td {
+        border: 1px solid #C0C0C0;
+        padding: 2px;
+    }
+
+    .alt {
+        background-color: #E8E8E8;
+        color: #000;
+    }
+
+    .product {
+        width: 200px;
+        font-weight: bold;
+    }
+</style>
+<div>
+    <table style="width: 100%; height: 688px;">
+        <tr>
+            <td style="width: 297px;vertical-align:top;">
+                <h3>会员信息</h3>
+                <input type="hidden" id="userId" value="@ViewBag.uid" />
+                <table border="1" style="border-collapse:collapse;">
+                    <tr>
+                        <td style="width: 70px;text-align:right;">移动电话 </td>
+                        <td style="width: 158px;text-align:left;">
+                            <input type="text" id="memberMobile" name="memberMobile" readOnly="true" style="Width:156px;border:none;" value="@Model.CustomerInfo.MobilePhone" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 70px;text-align:right;">办公电话 </td>
+                        <td style="width: 158px;text-align:left;">
+                            <input type="text" id="memberOffice" name="memberOffice" readOnly="true" style="Width:156px;border:none;" value="@Model.CustomerInfo.OfficePhone" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 70px;text-align:right;">家庭电话 </td>
+                        <td style="width: 158px;text-align:left;">
+                            <input type="text" id="memberHome" name="memberHome" readOnly="true" style="Width:156px;border:none;" value="@Model.CustomerInfo.HomePhone" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 70px;text-align:right;">QQ号码 </td>
+                        <td style="width: 158px;text-align:left;">
+                            <input type="text" id="memberQQ" name="memberQQ" readOnly="true" style="Width:156px;border:none" value="@Model.CustomerInfo.QqNum" />
+                        </td>
+                    </tr>
+                </table><br />
+                <input type="button" ID="btnModiInfo" value="修改信息" onclick="javascript: modiInfo();" />
+                <input type="button" ID="btnModiPWD" value="修改密码" onclick="javascript: modiPWD();" /><br /><br />
+                <form id="baseInfo" class="col-md-12" asp-controller="Account" asp-action="MemberHome" method="post">
+                    <div id="pwdBlk" style="display:@ViewBag.pwdDisp">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group" style="font:100">
+                            <label asp-for="OldPassword" class="col-md-5 control-label text-right"></label>
+                            <div class="col-md-7 text-left">
+                                <input asp-for="OldPassword" class="form-control" />
+                                <span asp-validation-for="OldPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="NewPassword" class="col-md-5 control-label text-right"></label>
+                            <div class="col-md-7 text-left">
+                                <input asp-for="NewPassword" class="form-control" />
+                                <span asp-validation-for="NewPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="col-md-5 control-label text-right"></label>
+                            <div class="col-md-7 text-left">
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <button type="submit" class="btn btn-default">提交新密码</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </td>
+            <td style="vertical-align:top;">
+                <h3>订单一览</h3>
+                <table border="1" style="border-width:1px;border-collapse:collapse;width:100%;">
+
+                    <tr>
+                        <th>订单时间</th>
+                        <th>收货人</th>
+                        <th>书名</th>
+                        <th>留言</th>
+                        <th>图片</th>
+                        <th>金额</th>
+                        <th>付款时间</th>
+                        <th>订单状态</th>
+                    </tr>
+                    @foreach (var cartItem in Model.Orders)
+                    {
+                        <tr>
+                            <td>@cartItem.orderTime.ToString()</td>
+                            <td>@cartItem.name</td>
+                            <td>@cartItem.productName</td>
+                            <td>@cartItem.words</td>
+                            <td><img src="/images/@cartItem.smallImg" style="width:120px;height:120px" /></td>
+                            <td>@cartItem.amt</td>
+                            <td>@cartItem.transTime</td>
+                            <td>@cartItem.orderState</td>
+                                @*@if (cartItem.numberOrderState == 0)
+                                {
+                                    <td >
+                                     <a href="/Order/fukuantioazhuang">付款</a>    
+                                    </td>
+                                }
+                                else { <td>  </td> }*@
+                        </tr>
+                    }
+                </table>
+
+               
+                            <div page-model="@Model.PagingInfo" page-action="MemberHome"></div>
+</td>
+        </tr>
+    </table>
+</div>
+

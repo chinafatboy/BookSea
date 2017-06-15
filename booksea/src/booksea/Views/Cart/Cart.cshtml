@@ -1,0 +1,192 @@
+﻿@{ 
+    ViewBag.Title = "购物车";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int cartRow = 0;
+    int faviRow = 0;
+}
+@using booksea.Models;
+@*<div class="cart-wrap">
+    <table id="cartTable" class="cart table table-condensed">
+        <thead>
+            <tr>
+                <th class="t-goods text-center"><label>商品名称</label></th>
+                <th class="t-selling-price text-center"><label>销售单价</label></th>
+                <th class="t-qty text-center"><label>商品数量</label></th>
+                <th class="t-subtotal text-center"><label>金额小计</label></th>
+                <th class="t-action"><label>操作</label></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                    <td class="goods"><div class="col-md-offset-3"><label> <input type="checkbox" class="check-one check" />完全写作指南</label></div></td>
+                <td class="selling-price number" style="text-align:center;" data-bind="58.50">
+                </td>
+                <td>
+                    <div class="input-group input-group-sm col-md-offset-5 col-md-2">
+                        <span class="input-group-addon minus">-</span> <input type="text" class="number form-control input-sm" value="2" />
+                        <span class="input-group-addon plus">+</span>
+                    </div>
+                </td>
+                <td class="subtotal" style="text-align:center;"></td>
+                <td class="action"><span class="delete btn btn-xs btn-warning">删除</span></td>
+            </tr>
+            <tr>
+                <td class="goods">
+                    <div class="col-md-offset-3">
+                        <label>
+                            <input type="checkbox" class="check-one check" />故事思维
+                        </label>
+                        </div>
+</td>
+                <td class="selling-price" data-bind="32.80" style="text-align:center;">
+                </td>
+                <td>
+                    <div class="input-group input-group-sm col-md-offset-5 col-md-2">
+                        <span class="input-group-addon minus">-</span> <input type="text" class="number form-control input-sm" value="3" />
+                        <span class="input-group-addon plus">+</span>
+                    </div>
+                </td>
+                <td class="subtotal" style="text-align:center;"></td>
+                <td class="action">
+                    <span class="delete btn btn-xs btn-warning">删除</span>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <hr />
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+                    <a href="" id="btn_settlement" type="button" class="btn btn-primary" disabled>去结算</a>
+                    <label>金额合计:<span id="priceTotal" class="price-total">0.00</span></label>
+                </div>
+            </div>
+    </div>*@
+
+
+
+
+<!--新添加-->
+<!--javascript-->
+<script>
+    function _doEdit(row){
+        document.getElementById('edit_' + row).style.display = 'none';
+        document.getElementById('update_' + row).style.display = 'block';
+        document.getElementById('qtyDsp_' + row).style.display = 'none';
+        document.getElementById('qtyIn_' + row).style.display = 'block';
+    }
+    function _doUpdate(row, oldvalue, retUrl) {
+        var newValue = document.getElementById('inQty_' + row).value;
+        if (newValue != oldvalue) {
+            window.location.assign("/Cart/updateCartRow/" + row + "?value=" + newValue + "&retUrl=" + retUrl);
+        }
+        else
+            _doCancel(row);
+    }
+    function _doCancel(row) {
+        document.getElementById('edit_' + row).style.display = 'block';
+        document.getElementById('update_' + row).style.display = 'none';
+        document.getElementById('qtyDsp_' + row).style.display = 'block';
+        document.getElementById('qtyIn_' + row).style.display = 'none';
+    }
+    function _doDelete(row, retUrl) {
+        window.location.assign("/Cart/deleCartRow/" + row + "?retUrl=" + retUrl);
+    }
+    function _doFaviDelete(row, retUrl) {
+        window.location.assign("/Cart/deleFaviRow/" + row + "?retUrl=" + retUrl);
+    }
+    function _doStore(row, retUrl) {
+        window.location.assign("/Cart/storeCartRow/" + row + "?retUrl=" + retUrl);
+    }
+    function _doBuy(row, retUrl) {
+        window.location.assign("/Cart/buyFaviRow/" + row + "?retUrl=" + retUrl);
+    }
+</script>
+
+
+
+<!--页面排版-->
+<!---->
+<div>
+    @if (ViewBag.cart != null && ((List<CartItem>)ViewBag.cart).Count >= 1)
+    {
+
+        <table border="1" style="background-color:White;border-width:1px;border-style:Double;font-size:X-Small;width:95%;border-collapse:collapse;">
+            <caption style="font-size:14px;">我的购物车</caption>
+            <tr style="font-weight:bold">
+                <th scope="col">&nbsp;</th><th scope="col" style="text-align:center;">书名</th>
+                <th scope="col" style="text-align:center;">书本描述</th>
+                <th scope="col" style="text-align:center;">市场单价</th>
+                <th scope="col" style="text-align:center;">网购单价</th>
+                <th scope="col" style="text-align:center;">数量</th>
+                <th scope="col" style="text-align:center;">图片</th>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            @foreach (var cartItem in ViewBag.cart as List<CartItem>)
+            {
+                <tr style="color:#330099;background-color:white">
+                    <td style="border:1px solid;text-align:center;">
+                        <div id="edit_@cartRow" style="display:block">
+                            <a href="javascript:_doEdit(@cartRow)" style="color:#330099;">编辑</a>
+                        </div>
+                        <div id="update_@cartRow" style="display:none;">
+                            <a href="javascript:_doUpdate(@cartRow,@cartItem.qty,'@ViewBag.continueBuy')" style="color:#330099;">更新</a>&nbsp;&nbsp;
+                            <a href="javascript:_doCancel(@cartRow)" style="color:#330099;">取消</a>
+                        </div>
+                    </td>
+                    <td style="border:1px solid;text-align:center;">@cartItem.BookName</td>
+                    <td style="border:1px solid;text-align:center;">@cartItem.BookFeature</td>
+                    <td style="border:1px solid;text-align:center;">@cartItem.price</td>
+                    <td style="border:1px solid;text-align:center;">@cartItem.realPrice</td>
+                    <td style="border:1px solid;text-align:center;">
+                        <div id="qtyDsp_@cartRow" style="display:block;">@cartItem.qty</div>
+                        <div id="qtyIn_@cartRow" style="display:none;"><input id="inQty_@cartRow" type="number" style="width:30px;" value="@cartItem.qty" /></div>
+                    </td>
+                    <td style="border:1px solid;text-align:center;"><img src="/Images/@cartItem.smallImg" style="height:200px;width:200px;border-width:0px;" /></td>
+                    <td style="border:1px solid;text-align:center;"><a href="javascript:_doDelete(@cartRow,'@ViewBag.continueBuy')" style="color:#330099;">删除</a></td>
+                    <td style="border:1px solid;text-align:center;"><a href="javascript:_doStore(@cartRow,'@ViewBag.continueBuy');">收藏</a></td>
+                </tr>
+                cartRow++;
+            }
+        </table>
+        <table style="width:95%;margin:0px;padding:0px;">
+            <tr>
+                <td style="text-align:left;"><a href="@ViewBag.continueBuy">继续选购</a></td>
+                <td style="text-align:right;"><a href="/Order">结算</a></td>
+            </tr>
+        </table>
+    }
+
+    @if (ViewBag.favi != null && ViewBag.favi.Count >= 1)
+    {
+        <table border="1" style="background-color:White;border-width:1px;border-style:Double;font-size:X-Small;width:95%;border-collapse:collapse;">
+            <caption style="font-size:14px;">我的收藏架</caption>
+            <tr style="color:#FFFFCC;background-color:#990000;font-weight:bold;">
+                <th scope="col" style="text-align:center;">商品名</th>
+                <th scope="col" style="text-align:center;">商品描述</th>
+                <th scope="col" style="text-align:center;">市场价</th>
+                <th scope="col" style="text-align:center;">网购价</th>
+                <th scope="col" style="text-align:center;">图片</th>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            @foreach (var cartItem in ViewBag.favi as List<CartItem>)
+            {
+                <tr style="color:#330099;background-color:White;">
+                    <td style="border:1px solid;text-align:center;">@cartItem.BookName</td>
+                    <td style="border:1px solid;text-align:center;">@cartItem.BookFeature</td>
+                    <td style="border:1px solid;text-align:center;">@cartItem.price</td>
+                    <td style="border:1px solid;text-align:center;">@cartItem.realPrice</td>
+                    <td style="border:1px solid;text-align:center;"><img src="/Images/@cartItem.smallImg" style="height:200px;width:200px;border-width:0px;" /></td>
+                    <td style="border:1px solid;text-align:center;"><a href="javascript:_doFaviDelete(@faviRow,'@ViewBag.continueBuy')" style="color:#330099;">删除</a></td>
+                    <td style="border:1px solid;text-align:center;"><a href="javascript:_doBuy(@faviRow,'@ViewBag.continueBuy');">购买</a></td>
+                </tr>
+                faviRow++;
+            }
+        </table>
+    }
+
+
+
+</div>

@@ -1,0 +1,220 @@
+﻿@{
+    ViewData["Title"] = "首页";
+}
+@*首页模板根据数据库的数据来刷新界面*@
+@model HomeIndexModel
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+
+                <h3><a asp-action="WenYi">文学</a></h3>
+                <p><a asp-action="renwen">诗歌随笔</a>&nbsp&nbsp<a asp-action="jingguan">中国文学</a>&nbsp&nbsp<a href="#" class="a1">外国文学</a></p>
+                <h3><a asp-action="renwen">人文社科</a></h3>
+                <p><a href="#" class="a1">心理学</a>&nbsp&nbsp<a href="#" class="a1">社会科学</a>&nbsp&nbsp<a href="#" class="a1">哲学宗教</a></p>
+                <h3><a asp-action="jingguan">经管</a></h3>
+                <p><a href="#" class="a1">管理</a>&nbsp&nbsp<a href="#" class="a1">经济</a>&nbsp&nbsp<a href="#" class="a1">投资</a></p>
+                <h3><a asp-action="lizhi">励志</a></h3>
+                <p><a href="#" class="a1">人在职场</a>&nbsp&nbsp<a href="#" class="a1">成功学</a>&nbsp&nbsp<a href="#" class="a1">心灵鸡汤</a></p>
+                <h3><a asp-action="keji">科技</a></h3>
+                <p><a href="#" class="a1">科普读物</a>&nbsp&nbsp<a href="#" class="a1">工业技术</a>&nbsp&nbsp<a href="#" class="a1">农业林业</a></p>
+                <h3><a asp-action="shenghuo">生活</a></h3>
+                <p><a href="#" class="a1">育儿家教</a>&nbsp&nbsp<a href="#" class="a1">健身保健</a>&nbsp&nbsp<a href="#" class="a1">时尚生活</a></p>
+                @*@foreach (BookCat bookCat in Model.bookCats)
+                {
+                    <h3><a class="list-group-item" href="#">@bookCat.typeName</a></h3>//取出大分类名
+                    
+                    foreach (BookType bookType in bookCat.types)//
+                    { 
+                        <a href="#" class="a1">@bookType.TyptName</a><span>&nbsp;</span>
+                    }
+                }*@  
+            </div>
+        </div>
+
+        <div class="col-md-8" id="col1">
+            <div id="Carousel" class="carousel slide" data-ride="carousel">
+                <!--id="myCarousel"，用于下方不同内容的data-target唯一绑定。-->
+                <!--1.小点点-->
+                <ol class="carousel-indicators">
+                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#Carousel" data-slide-to="1"></li>
+                    <li data-target="#Carousel" data-slide-to="2"></li>
+                </ol>
+                <!-- 2.轮播内容:图片\文字\链接 -->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        <img src="images/banner.jpg" alt="First slide"><!--图片-->
+                        <div class="carousel-caption">
+                            <!--文字-->
+                            <h2>kindle</h2>
+                            <p>阅读，不止步</p>
+                            <p><a class="btn btn-lg btn-primary" href="https://www.amazon.cn/dp/B00QJDOLIO/462-3959846-1996534?_encoding=UTF8&pf_rd_i=desktop&pf_rd_m=A1AJ19PSB66TGU&pf_rd_p=299499992&pf_rd_r=E6Y7DA62DBX57V55F93K&pf_rd_s=Tcg-slide-1&pf_rd_t=36701&ref_=p-Tcg-slide-1--110352772" role="button">了解更多</a></p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img src="images/banner1.jpg" alt="Second slide">
+                        <div class="carousel-caption">
+                            <h2>人文社科</h2>
+                            <p>专题内5折</p>
+                            <p><a class="btn btn-lg btn-primary" href="https://www.amazon.cn/s/ref=nb_sb_ss_i_3_11/462-3959846-1996534?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&url=search-alias%3Daps&field-keywords=%E4%BA%BA%E6%96%87%E7%A4%BE%E7%A7%91&sprefix=renwensheke%2Caps%2C286&crid=7FIVD0FUMV74" role="button">了解更多</a></p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img src="images/banner2.jpg" alt="Third slide">
+                        <div class="carousel-caption">
+                            <h2>配送上门</h2>
+                            <p>全国主要地区包邮</p>
+                            <p><a class="btn btn-lg btn-primary" href="http://www.sf-express.com/cn/sc/" role="button">了解更多</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!--3.左右导航按钮-->
+                <a class="carousel-control left" href="#Carousel" data-slide="prev" role="button">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">上一页</span>
+                    <!--&lsaquo;-->
+                </a>
+                <a class="carousel-control right" href="#Carousel" data-slide="next" role="button">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">下一页</span>
+                    <!--&rsaquo;-->
+                </a>
+            </div>
+            <hr>
+            <div class="input-group col-md-offset-3 col-md-6">
+                <input type="text" class="form-control" placeholder="请输入书名">
+                <span class="input-group-btn">
+                    <button class="btn btn-info btn-search">搜索</button>
+                </span>
+            </div>
+            <div class="goods">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#tab-hot" data-toggle="tab">热卖</a></li>
+                    <li><a href="#tab-rank" data-toggle="tab">排行</a></li>
+                    <li><a href="#tab-good" data-toggle="tab">精选</a></li>
+                </ul>
+                <div class="tab-content">
+                    <!--热卖-->
+                    <div class="tab-pane active" id="tab-hot">
+                        <div class="row">
+                            @foreach (BookList book in Model.hotBooks)
+                            {
+                                <div class="col-md-4"><a href="Home/Detail/@book.p.Id"><img src="~/images/@book.p.SmallImg" /></a><br /><h3>@book.p.BookName</h3><br /><p>市场价:@book.p.Price</p><br />
+                                    @foreach (Prices prc in book.pList)
+                                    {
+                                       <p><span>@prc.memberName</span>价：<span>@prc.realPrice</span></p>
+                                    }
+                            <br />
+                                    <a href="/Cart/AddCart/@book.p.Id">购买</a>
+                                    <a href="/Cart/AddFavi/@book.p.Id">收藏</a>
+                               </div>
+                            }
+                        </div>
+                    </div>
+                    <!--排行-->
+                    <div class="tab-pane" id="tab-rank">
+                        <div class="row">
+                            @foreach (BookList book in Model.ranBooks)
+                            {
+                                <div class="col-md-4">
+                                    <a href="Home/Detail/@book.p.Id"><img src="~/images/@book.p.SmallImg" /></a><br /><h3>@book.p.BookName</h3><br /><p>市场价:@book.p.Price</p><br />
+                                    @foreach (Prices prc in book.pList)
+                                    {
+                                       <p><span>@prc.memberName</span>价:<span>@prc.realPrice</span></p>
+                                    }
+                                    <br />
+                                    <a href="/Cart/AddCart/@book.p.Id">购买</a>
+                                    <a href="/Cart/AddFavi/@book.p.Id">收藏</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                       <!--精选--> 
+                     <div class="tab-pane" id="tab-good">
+                        <div class="row">
+                            @foreach (BookList book in Model.recBooks)
+                            {
+                                <div class="col-md-4">
+                                    <a href="Home/Detail/@book.p.Id"><img src="~/images/@book.p.SmallImg" /></a><br /><h3>@book.p.BookName</h3><br /><p>市场价:@book.p.Price</p><br />
+                                    @foreach (Prices prc in book.pList)
+                                    {
+                                        <p><span>@prc.memberName</span><span>价：</span><span>@prc.realPrice</span></p>
+                                    }
+                                    <br />
+                                    <a href="/Cart/AddCart/@book.p.Id">购买</a>
+                                    <a href="/Cart/AddFavi/@book.p.Id">收藏</a>
+                                </div>
+                            }
+        
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <ul>
+                <li><img src="images/banner-right1.jpg"></li>
+                <li><img src="images/banner-right2.jpg"></li>
+                <li><img src="~/images/banner-right3.jpg"></li>
+                <li><img src="~/images/banner-right4.jpg"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" id="row1">
+    <div class="col-md-3" id="col2">
+        <div class="recent-work-wrap">
+            <img class="img-responsive" src="images/shop.jpg" alt="">
+            <div class="overlay">
+                <div class="recent-work-inner">
+                    <h3><a href="#">亲自出马</a> </h3>
+                    <p>寻找离你最近的实体店</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3" id="col2">
+        <div class="recent-work-wrap">
+            <img class="img-responsive" src="images/kindle.jpg" alt="">
+            <div class="overlay">
+                <div class="recent-work-inner">
+                    <h3><a href="#">天生一对</a></h3>
+                    <p>选购kindle配件</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3" id="col2">
+        <div class="recent-work-wrap">
+            <img class="img-responsive" src="images/old.jpg" alt="">
+            <div class="overlay">
+                <div class="recent-work-inner">
+                    <h3><a href="#">以旧换新</a></h3>
+                    <p>新书新知识</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3" id="col2">
+        <div class="recent-work-wrap">
+            <img class="img-responsive" src="images/highschool.jpg" alt="">
+            <div class="overlay">
+                <div class="recent-work-inner">
+                    <h3><a href="#">高校优惠</a></h3>
+                    <p>高校师生购书优惠</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

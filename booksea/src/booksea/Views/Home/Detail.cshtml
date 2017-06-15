@@ -1,0 +1,75 @@
+﻿@{
+    
+    ViewData["Title"] = "详情";
+}
+@model BookList
+
+<title>书海</title>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                <h3><a asp-action="WenYi">文学</a></h3>
+                <p><a href="#" class="a1">诗歌随笔</a>&nbsp&nbsp<a href="#" class="a1">中国文学</a>&nbsp&nbsp<a href="#" class="a1">外国文学</a></p>
+                <h3><a asp-action="renwen">人文社科</a></h3>
+                <p><a href="#" class="a1">心理学</a>&nbsp&nbsp<a href="#" class="a1">社会科学</a>&nbsp&nbsp<a href="#" class="a1">哲学宗教</a></p>
+                <h3><a asp-action="jingguan">经管</a></h3>
+                <p><a href="#" class="a1">管理</a>&nbsp&nbsp<a href="#" class="a1">经济</a>&nbsp&nbsp<a href="#" class="a1">投资</a></p>
+                <h3><a asp-action="lizhi">励志</a></h3>
+                <p><a href="#" class="a1">人在职场</a>&nbsp&nbsp<a href="#" class="a1">成功学</a>&nbsp&nbsp<a href="#" class="a1">心灵鸡汤</a></p>
+                <h3><a asp-action="keji">科技</a></h3>
+                <p><a href="#" class="a1">科普读物</a>&nbsp&nbsp<a href="#" class="a1">工业技术</a>&nbsp&nbsp<a href="#" class="a1">农业林业</a></p>
+                <h3><a asp-action="shenghuo">生活</a></h3>
+                <p><a href="#" class="a1">育儿家教</a>&nbsp&nbsp<a href="#" class="a1">健身保健</a>&nbsp&nbsp<a href="#" class="a1">时尚生活</a></p>
+            </div>
+        </div>
+        <!--这位测试部分-->
+        @*<div>
+            <p><b>图书名称:@Model.BookName</b></p>
+            <p><b>图书编号：@Model.BookId</b></p>
+            <p><b>简单描述：@Model.BookFeature</b></p>
+            <p><b>市场价格：@Model.BookPrice</b></p>
+        </div>*@
+
+
+        <div class="col-md-10">
+            <hr />
+            <div class="input-group col-md-offset-3 col-md-6">
+                <input type="text" class="form-control" placeholder="请输入书名">
+                <span class="input-group-btn">
+                    <button class="btn btn-info btn-search">搜索</button>
+                </span>
+            </div>
+            <hr>
+            <div class="goods">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="~/images/@Model.p.BigImg" />
+                    </div>
+                    <div class="col-md-8">
+                        <h1>@Model.p.BookName</h1><br>
+                        <h2>@Model.p.BookFeature</h2><br>
+                        <p>价格：<h3>@Model.p.Price</h3></p><br />
+                        <p>服务：由书海配送上门|货到付款</p><br /><br />
+                        <a class="btn btn-lg btn-primary" href="/Cart/AddCart/@Model.p.Id" role="button">加入购物车</a>
+                    </div>
+                </div>
+                <hr />
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#tab-inf" role="tab" data-toggle="tab">商品详情</a></li>
+                    <li><a href="#tab-mark" role="tab" data-toggle="tab">精彩书评</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-inf">
+                        <img src="~/images/@Model.p.BookDescription" />
+                    </div>
+                    <div class="tab-pane" id="tab-mark">
+                        <p>
+                           @Model.p.Bookmeaning
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

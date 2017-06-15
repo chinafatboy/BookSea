@@ -1,0 +1,15 @@
+﻿@model PayRequestInfo
+<html>
+<head>
+</head>
+<body onload="document.payRequest.submit()">
+    <form name="payRequest" method="post" action="@Model.PostUrl">
+        <input name="MerId" type="hidden" value="@Model.MerId">
+        <input name="Amt" type="hidden" value="@Model.Amt">
+        <input name="PaymentTypeObjId" type="hidden" value="@Model.PaymentTypeObjId">
+        <input name="MerTransId" type="hidden" value="@Model.MerTransId">
+        <input name="ReturnUrl" type="hidden" value="@Model.ReturnUrl">
+        <input name="CheckValue" type="hidden" value="@Model.CheckValue">
+    </form>
+</body>
+</html>

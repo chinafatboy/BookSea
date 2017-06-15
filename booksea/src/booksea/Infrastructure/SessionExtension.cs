@@ -1,0 +1,24 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Newtonsoft.Json;
+namespace booksea.Infrastructure
+{
+    public static class SessionExtension
+    {
+        public static void SetJson(this ISession session, string key, object value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+        public static T GetJson<T>(this ISession session, string key)
+        {
+            var sessionData = session.GetString(key);
+            return sessionData == null ? default(T) : JsonConvert.DeserializeObject<T>(sessionData);
+        }
+
+        public static T Get<T>(this ISession see, string key)
+        {
+            var see1 = see.GetString(key);
+            return see1 == null ? default(T) : JsonConvert.DeserializeObject<T>(see1);
+        }
+    }
+}

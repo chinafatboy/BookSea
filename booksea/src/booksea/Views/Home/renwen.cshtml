@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "文学";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                <h3><a asp-action="WenYi">文学</a></h3>
+                <p><a href="#" class="a1">诗歌随笔</a>&nbsp&nbsp<a href="#" class="a1">中国文学</a>&nbsp&nbsp<a href="#" class="a1">外国文学</a></p>
+                <h3><a asp-action="renwen">人文社科</a></h3>
+                <p><a href="#" class="a1">心理学</a>&nbsp&nbsp<a href="#" class="a1">社会科学</a>&nbsp&nbsp<a href="#" class="a1">哲学宗教</a></p>
+                <h3><a asp-action="jingguan">经管</a></h3>
+                <p><a href="#" class="a1">管理</a>&nbsp&nbsp<a href="#" class="a1">经济</a>&nbsp&nbsp<a href="#" class="a1">投资</a></p>
+                <h3><a asp-action="lizhi">励志</a></h3>
+                <p><a href="#" class="a1">人在职场</a>&nbsp&nbsp<a href="#" class="a1">成功学</a>&nbsp&nbsp<a href="#" class="a1">心灵鸡汤</a></p>
+                <h3><a asp-action="keji">科技</a></h3>
+                <p><a href="#" class="a1">科普读物</a>&nbsp&nbsp<a href="#" class="a1">工业技术</a>&nbsp&nbsp<a href="#" class="a1">农业林业</a></p>
+                <h3><a asp-action="shenghuo">生活</a></h3>
+                <p><a href="#" class="a1">育儿家教</a>&nbsp&nbsp<a href="#" class="a1">健身保健</a>&nbsp&nbsp<a href="#" class="a1">时尚生活</a></p>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div id="Carousel" class="carousel slide" data-ride="carousel">
+                <!--id="myCarousel"，用于下方不同内容的data-target唯一绑定。-->
+                <!--1.小点点-->
+                <ol class="carousel-indicators">
+                    <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#Carousel" data-slide-to="1"></li>
+                    <li data-target="#Carousel" data-slide-to="2"></li>
+                </ol>
+                <!-- 2.轮播内容:图片\文字\链接 -->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        <img src="~/images/juren-big.jpg" alt="First slide"><!--图片-->
+                    </div>
+                    <div class="item">
+                        <img src="~/images/gelei.jpg" alt="Second slide">
+                    </div>
+                    <div class="item" width="1920" height="650">
+                        <img src="~/images/waipo.jpg" width="1920" height="150"    alt="Third slide" >
+                    </div>
+                </div>
+
+                <!--3.左右导航按钮-->
+                <a class="carousel-control left" href="#Carousel" data-slide="prev" role="button">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">上一页</span>
+                    <!--&lsaquo;-->
+                </a>
+                <a class="carousel-control right" href="#Carousel" data-slide="next" role="button">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">下一页</span>
+                    <!--&rsaquo;-->
+                </a>
+            </div>
+            <hr>
+            <div class="input-group col-md-offset-3 col-md-6">
+                <input type="text" class="form-control" placeholder="请输入书名">
+                <span class="input-group-btn">
+                    <button class="btn btn-info btn-search">搜索</button>
+                </span>
+            </div>
+            <div class="goods">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#tab-hot" data-toggle="tab">最流行</a></li>
+                    <li><a href="#tab-rank" data-toggle="tab">重磅推荐</a></li>
+                    <li><a href="#tab-good" data-toggle="tab">热门小说</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-hot">
+                        <div class="row">
+                            <div class="col-md-4"><a asp-action="book1"><img src="~/images/xinli.png" width="113" height="150" /></a><br /><h3>￥58.50</h3><br /><p>社会心理学经典：彻底看清你自己和你身边的世界精装版</p></div>
+                            <div class="col-md-4"><a><img src="~/images/zibei.png" width="115" height="150" /></a><br /><h3>￥32.80</h3><br /><p>自卑与超越</p></div>
+                            <div class="col-md-4"><a><img src="~/images/boyi.png" width="115" height="150" /></a><br /><h3>￥67.20</h3><br /><p>博弈心理学</p></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-rank">
+                        <div class="row">
+                            <div class="col-md-4"><a><img src="~/images/book4.jpg  " /></a><br /><h3>￥35.20</h3><br /><p>人民的名义</p></div>
+                            <div class="col-md-4"><a><img src="~/images/book5.jpg" /></a><br /><h3>￥54.40</h3><br /><p>人类简史：从动物到上帝</p></div>
+                            <div class="col-md-4"><a><img src="~/images/book6.jpg" /></a><br /><h3>￥23.40</h3><br /><p>摆渡人</p></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-good">
+                        <div class="row">
+                            <div class="col-md-4"><a><img src="~/images/book7.jpg" /></a><br /><h3>¥ 69.00</h3><br /><p>我的小小忧伤</p></div>
+                            <div class="col-md-4"><a><img src="~/images/book8.jpg" /></a><br /><h3>￥68.80</h3><br /><p>聪明的投资者</p></div>
+                            <div class="col-md-4"><a><img src="~/images/book9.jpg" /></a><br /><h3>￥28.40</h3><br /><p>天才在左疯子在右</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <ul>
+                <li><img src="~/images/xiangtian.jpg"></li>
+                <li><img src="~/images/bainian.jpg"></li>
+                <li><img src="~/images/nihao.jpg"></li>
+                <li><img src="~/images/xunzhao.jpg"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row" id="row1">
+    <div class="col-md-3" id="col2">
+        <div class="recent-work-wrap">
+            <img class="img-responsive" src="~/images/bottom-1.jpg" alt="">
+            <div class="overlay">
+                <div class="recent-work-inner">
+                    <h3><a href="#">玛格丽特小镇</a> </h3>
+                    <p>现象级全球畅销书</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" id="col2">
+        <div class="recent-work-wrap">
+            <img class="img-responsive" src="~/images/bottom-2.jpg" alt="">
+            <div class="overlay">
+                <div class="recent-work-inner">
+                    <h3><a href="#">黑锅5：我和罪犯玩命的日子/a></h3>
+                    <p>《余罪》作者常书欣全新力作！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" id="col2">
+        <div class="recent-work-wrap">
+            <img class="img-responsive" src="~/images/bottom-3.jpg" alt="">
+            <div class="overlay">
+                <div class="recent-work-inner">
+                    <h3><a href="#">星星上的人</a></h3>
+                    <p>如果你遇到星星上的人，请把你所有的爱都给他</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" id="col2">
+        <div class="recent-work-wrap">
+            <img class="img-responsive" src="~/images/bottom-4.jpg" alt="">
+            <div class="overlay">
+                <div class="recent-work-inner">
+                    <h3><a href="#">怦然心动</a></h3>
+                    <p>豆瓣130万读者共同认可电影原著白金纪念版</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

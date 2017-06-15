@@ -1,0 +1,111 @@
+﻿@inject BookSeaContext db
+@{
+    ViewBag.contBuy = "/";
+ }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookSea</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+</head>
+<body style="overflow-x:hidden;">
+    <div class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">书海</a>
+            </div>
+            @*<div style="margin-top:20px; text-align:center">
+                <span lang="zh-cn">首页 | 新书预售 | 关于我们</span>
+                <span lang="zh-cn">&nbsp;&nbsp; </span>
+                <img src="/Images/car_10.gif" style="Width:16px" />
+                <a href="/Cart?retUrl=@WebUtility.UrlEncode(ViewBag.contBuy.ToString())">
+                    <span lang="zh-cn">我的购物车</span>
+                </a>
+            </div>*@
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">首页</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="">新书预售</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="">关于我们</a></li>
+                </ul>
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
+        </div>
+    </div>
+        @RenderBody()
+    <div class="footer">
+        <div class="footer-top">
+            <p>Copyrights © 2017 Bootstrap 响 应 式  网 站  | 书 海 版 权 所 有</p>
+        </div>
+        <div class="footer-bottom">
+            <ul>
+                <li>
+                    <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1034560037&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1034560037:51" alt="点击这里给我发消息" title="点击这里给我发消息" /></a>
+
+                </li>
+                <li>
+                    <a href="https://tawk.to/8aee2e4ec3097d8ebbef78469280988831e4f54b/popout/default/?$_tawk_popout=true">
+                        <i class="glyphicon glyphicon-phone-alt">
+                            &nbsp; 联 系 我 们
+                        </i>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://ditu.amap.com/place/B0FFF0E8YN">
+                        <i class="glyphicon glyphicon-map-marker">
+                            &nbsp; 公 司 地 址
+                        </i>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://help.dangdang.com/details/page2">
+                        <i class="glyphicon glyphicon-question-sign">
+                            &nbsp; 服 务 声 明
+                        </i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,424 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model booksea.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "订单确认";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.contBuy = "/";
+    int orderNo = 0;
+    //HttpRequest Request = ViewBag.Request as HttpRequest;
+
+}
+@section Scripts
+{
+    <script>
+        function validateCurStepInput() { //客户端验证输入是否遗漏
+            switch (document.getElementById("curStep").value) {
+                case "step1":
+                    var mPhone = document.getElementById("txtMPhone").value.trim();
+                    var oPhone = document.getElementById("txtOPhone").value.trim();
+                    var hPhone = document.getElementById("txtHPhone").value.trim();
+                    var email = document.getElementById("txtEmail").value.trim();
+                    var qq = document.getElementById("txtQQ").value.trim();
+                    if (mPhone != "") document.getElementById("custMobile").innerText = mPhone;
+                    if (oPhone != "") document.getElementById("custOffice").innerText = oPhone;
+                    if (hPhone != "") document.getElementById("custHome").innerText = hPhone;
+                    if (email != "") document.getElementById("custEmail").innerText = email;
+                    if (qq != "") document.getElementById("custQQ").innerText = qq;
+                    document.getElementById("s1Valid").value = "true";
+                    return true;
+                case "step2":
+                    var err="";
+                    var ordNo = document.getElementById("orderQty").value;
+                    for(var i=0;i<ordNo;i++){
+                        var first = true;
+                        var receiver = document.getElementById("name_" + i).value.trim();
+                        if (receiver == "") {
+                            first = false;
+                            err += "\n订单" + i + "：收货人姓名。";
+                        }
+                        else {
+                            document.getElementById("receiverName_" + i).innerText = receiver;
+                        }
+                        var address = document.getElementById("road_" + i).value.trim() +
+                                      document.getElementById("street_" + i).value.trim() +
+                                      document.getElementById("door_" + i).value.trim();
+                        if (address == "") {
+                            if (first) {
+                                first = false;
+                                err += "\n订单" + i + "：";
+                            }
+                            err += "收货人地址。";
+                        }
+                        else {
+                            document.getElementById("receiverAddr_" + i).innerText =
+                                document.getElementById("selPro_" + i).title +
+                                document.getElementById("selCity_" + i).title +
+                                document.getElementById("selDist_" + i).title + address;
+                        }
+                        if (document.getElementById("mobile_" + i).value.trim() != "") {
+                            document.getElementById("receiverMobile_" + i).innerText = document.getElementById("mobile_" + i).value.trim();
+                        }
+                        else if(document.getElementById("home_" + i).value.trim() != "") {
+                            document.getElementById("receiverHome_" + i).innerText = document.getElementById("home_" + i).value.trim();
+                        }
+                        else if (document.getElementById("office_" + i).value.trim() != "") {
+                            document.getElementById("receiverOffice_" + i).innerText = document.getElementById("office_" + i).value.trim();
+                        }
+                        else {
+                            if (first) { err += "\n订单" + i + "："; }
+                            err += "收货人联系电话。";
+                        }
+                    }
+                    if(err==""){
+                        document.getElementById("s2Valid").value = "true";
+                        return true;
+                    }
+                    else{
+                        alert("请补充输入以下信息：\n"+err);
+                        return false;
+                    }
+                case "step3":
+                    if (document.getElementById("paymentType").value != -1) {
+                        document.getElementById("s3Valid").value = "true";
+                        return true;
+                    }
+                    else {
+                        alert("请选择付款方式！");
+                        return false;
+                    }
+                case "step4":
+                    return true;
+            }
+        }
+        function step1() {
+            if (document.getElementById("curStep").value != "step1") {
+                if (validateCurStepInput()) {
+                    document.getElementById("contactInfo").style.display = 'block';
+                    document.getElementById("receiverInfo").style.display = 'none';
+                    document.getElementById("paymentInfo").style.display = 'none';
+                    document.getElementById("assureInfo").style.display = 'none';
+                    document.getElementById("s1").style.background = '#BEBEBE';
+                    document.getElementById("s2").style.background = 'white';
+                    document.getElementById("s3").style.background = 'white';
+                    document.getElementById("s4").style.background = 'white';
+                    document.getElementById("curStep").value = "step1";
+                }
+            }
+        }
+        function step2() {
+            if (document.getElementById("curStep").value != "step2") {
+                if (validateCurStepInput()) {
+                    document.getElementById("contactInfo").style.display = 'none';
+                    document.getElementById("receiverInfo").style.display = 'block';
+                    document.getElementById("paymentInfo").style.display = 'none';
+                    document.getElementById("assureInfo").style.display = 'none';
+                    document.getElementById("s1").style.background = 'white';
+                    document.getElementById("s2").style.background = '#BEBEBE';
+                    document.getElementById("s3").style.background = 'white';
+                    document.getElementById("s4").style.background = 'white';
+                    document.getElementById("curStep").value = "step2";
+                }
+            }
+        }
+        function step3() {
+            if (document.getElementById("curStep").value != "step3") {
+                if (validateCurStepInput()) {
+                    document.getElementById("contactInfo").style.display = 'none';
+                    document.getElementById("receiverInfo").style.display = 'none';
+                    document.getElementById("paymentInfo").style.display = 'block';
+                    document.getElementById("assureInfo").style.display = 'none';
+                    document.getElementById("s1").style.background = 'white';
+                    document.getElementById("s2").style.background = 'white';
+                    document.getElementById("s3").style.background = '#BEBEBE';
+                    document.getElementById("s4").style.background = 'white';
+                    document.getElementById("curStep").value = "step3";
+                }
+            }
+        }
+        function step4() {
+            if (document.getElementById("curStep").value != "step4") {
+                if (validateCurStepInput()) {
+                    document.getElementById("contactInfo").style.display = 'none';
+                    document.getElementById("receiverInfo").style.display = 'none';
+                    document.getElementById("paymentInfo").style.display = 'none';
+                    document.getElementById("assureInfo").style.display = 'block';
+                    document.getElementById("s1").style.background = 'white';
+                    document.getElementById("s2").style.background = 'white';
+                    document.getElementById("s3").style.background = 'white';
+                    document.getElementById("s4").style.background = '#BEBEBE';
+                    document.getElementById("curStep").value = "step4";
+                }
+            }
+        }
+        function doSubmit() {
+            if (document.getElementById("s2Valid").value == "false") {
+                alert("请输入订单信息！");
+                step2();
+            }
+            else if (document.getElementById("s3Valid").value == "false") {
+                alert("请选择支付方式！");
+                step3();
+            }
+            else {
+                document.getElementById("orderForm").submit();
+            }
+        }
+        var xmlhttp;
+
+        $(function () {
+            xmlhttp = null;
+            if (window.XMLHttpRequest) {// code for Firefox, Opera, IE7, etc.
+                xmlhttp = new XMLHttpRequest();
+            }
+            else if (window.ActiveXObject) {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            if (xmlhttp != null) {
+                xmlhttp.open("GET", "/Order/getProvinces", false);//同步查询省列表
+                xmlhttp.send();
+                listProvince();
+            }
+            else {
+                alert("您的浏览器不支持XMLHTTP。");
+            }
+        });
+        function doAjaxCall(url,resultProcess,args) {
+            xmlhttp = null;
+            if (window.XMLHttpRequest) {// code for Firefox, Opera, IE7, etc.
+                xmlhttp = new XMLHttpRequest();
+            }
+            else if (window.ActiveXObject) {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            if (xmlhttp != null) {
+                xmlhttp.onreadystatechange = function(){
+                    if (xmlhttp.readyState == 4) {// 4 = "loaded"
+                        if (xmlhttp.status == 200) {// 200 = "OK"
+                            resultProcess(args);
+                        }
+                        else {
+                            alert("服务出现问题:" + xmlhttp.statusText);
+                        }
+                    }
+                };
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send(null);
+            }
+            else {
+                alert("您的浏览器不支持XMLHTTP。");
+            }
+        }
+        function listProvince() {
+            var jProvinces = xmlhttp.responseText;
+            var Provinces = eval('(' + jProvinces + ')');
+            var orderCount = document.getElementById("orderQty").value;
+            for (var ord = 0; ord < orderCount; ord++) {
+                var group = document.getElementById("selPro_" + ord);
+                group.length = 0;
+                for (var i = 0; i < Provinces.length; i++) {
+                    group.options.add(new Option(Provinces[i].Name, Provinces[i].Id));
+                }
+                group.options[0].selected = true;
+                provinceChanged(ord);
+            }
+        }
+
+        function listCity(ord) {
+            var jCities = xmlhttp.responseText;
+            var Cities = eval('(' + jCities + ')');
+            var group = document.getElementById("selCity_" + ord);
+            group.length = 0;
+            for (var i = 0; i < Cities.length; i++) {
+                group.options.add(new Option(Cities[i].Name, Cities[i].Id));
+            }
+            group.options[0].selected = true;
+            cityChanged(ord);
+        }
+        function listDist(ord) {
+            var jDists = xmlhttp.responseText;
+            var Dists = eval('(' + jDists + ')');
+            var group = document.getElementById("selDist_" + ord);
+            group.length = 0;
+            for (var i = 0; i < Dists.length; i++) {
+                group.options.add(new Option(Dists[i].Name, Dists[i].Id));
+            }
+            group.options[0].selected = true;
+            distChanged(ord);
+        }
+        function provinceChanged(ord) {
+            var obj = document.getElementById('selPro_'+ord);
+            var index = obj.selectedIndex; //序号，取当前选中选项的序号
+            var val = obj.options[index].value;
+            obj.title = obj.options[index].text;
+            doAjaxCall('/Order/getCities/' + val,listCity,ord);
+            //$.getJSON('/Order/getCities/' + val, null,listCity); //这里可以使用此函数，但listCity参数需要修改
+        }
+        function cityChanged(ord) {
+            var obj = document.getElementById('selCity_'+ord);
+            var index = obj.selectedIndex; //序号，取当前选中选项的序号
+            var val = obj.options[index].value;
+            obj.title = obj.options[index].text;
+            doAjaxCall('/Order/getDistricts/' + val, listDist, ord);
+        }
+        function distChanged(ord) {
+            var obj = document.getElementById('selDist_' + ord);
+            obj.title = obj.options[obj.selectedIndex].text;
+        }
+        function paymentTypeSelected(obj){
+            document.getElementById("paymentType").value = obj.value;
+            document.getElementById("paymentTypeName").innerText = obj.title;
+        }
+        function selePaymentType(Id, typeName) {
+            document.getElementById('pt_' + Id).checked = 'checked';
+            document.getElementById("paymentType").value = Id;
+            document.getElementById("paymentTypeName").innerText = typeName;
+        }
+    </script>
+}
+<div>
+
+    <input id="curStep" type="hidden" value="step1" />
+    <input id="s1Valid" name="s1Valid" type="hidden" value="false" />
+    <input id="s2Valid" name="s2Valid" type="hidden" value="false" />
+    <input id="s3Valid" name="s3Valid" type="hidden" value="false" />
+    <form id="orderForm" action="~/Order" method="post">
+        @*AntiForgery.GetHtml()*@
+        <!--input id="orderQty" name="orderQty" type="hidden" value="@Model.orderQty" /-->
+        @Html.HiddenFor(m => m.orderQty)
+        <table>
+            <tr style="width:100%">
+                <td id="leftSide" style="width:18%;text-align:left;vertical-align:top;">
+                    <ol style="margin-top:60px">
+                        <li id="s1" style="background:#BEBEBE;"><a href="javascript: step1();">确认联系信息</a></li>
+                        <li id="s2" style="background:white;"><a href="javascript: step2();">输入送货信息</a></li>
+                        <li id="s3" style="background:white;"><a href="javascript: step3();">选择付款方式</a></li>
+                        <li id="s4" style="background:white;"><a href="javascript: step4();">确认订单</a></li>
+                    </ol>
+                </td>
+                <td id="contentPages" style="width:82%;text-align:center;">
+                    <div id="contactInfo" style="display:block;">
+                        <h3>确认您的联系信息</h3>
+                        <table style="width:100%;font:14px;">
+                            <tr>
+                                <td class="right">@Html.LabelFor(m => m.curCustomer.MobilePhone)</td>
+                                <td class="left">@Html.TextBoxFor(m => m.curCustomer.MobilePhone, new { id = "txtMPhone" })@*<input type="text" id="txtMPhone" name="txtMPhone" value="@curUser.mobilePhone" />*@</td>
+                            </tr>
+                            <tr>
+                                <td class="right">@Html.LabelFor(m => m.curCustomer.OfficePhone)</td>
+                                <td class="left">@Html.TextBoxFor(m => m.curCustomer.OfficePhone, new { id = "txtOPhone" })</td>
+                            </tr>
+                            <tr>
+                                <td class="right">@Html.LabelFor(m => m.curCustomer.HomePhone)</td>
+                                <td class="left">@Html.TextBoxFor(m => m.curCustomer.HomePhone, new { id = "txtHPhone" })</td>
+                            </tr>
+                            <tr>
+                                <td class="right">@Html.LabelFor(m => m.curCustomer.Email)</td>
+                                <td class="left">@Html.TextBoxFor(m => m.curCustomer.Email, new { id = "txtEmail" })</td>
+                            </tr>
+                            <tr>
+                                <td class="right">@Html.LabelFor(m => m.curCustomer.QqNumber)</td>
+                                <td class="left">@Html.TextBoxFor(m => m.curCustomer.QqNumber, new { id = "txtQQ" })</td>
+                            </tr>
+                        </table>
+                        @Html.HiddenFor(m => m.curCustomer.CustomerType)
+                        @Html.HiddenFor(m => m.curCustomer.Id)
+                        <input id="step1next" type="button" value="下一步" onclick="javascript: step2();" />
+                    </div>
+                    <div id="receiverInfo" style="display:none;">
+                        <h3>输入订单信息</h3>
+                        <table border="1" style="border-width:1px;border-collapse:collapse;width:100%;">
+                            <tr>
+                                <th>#</th>
+                                <th>收货人信息</th>
+                                <th>备注</th>
+                                <th>书本信息</th>
+                            </tr>
+                            @foreach (var cartItem in Model.orders)
+                            {
+                                <tr>
+                                    <td>订单<span>@orderNo</span></td>
+                                    <td style="text-align:left;width:350px">
+                                        姓名：<!--@*input id="name_@orderNo" name="name_@orderNo" type="text" class="left"value="@Request.Form["name_"+orderNo]" /*@-->
+                                        <input id="name_@orderNo" name="name_@orderNo" type="text" class="left" /><br />
+                                        省：<select id="selPro_@orderNo" onchange="provinceChanged(@orderNo);" style="width:70px;"></select>
+                                        市：<select id="selCity_@orderNo" onchange="cityChanged(@orderNo);" style="width:70px;"></select><br />
+                                        区：<select id="selDist_@orderNo" name="selDist_@orderNo" onchange="distChanged(@orderNo);" style="width:70px;"></select><br />
+                                        路名：<input id="road_@orderNo" name="road_@orderNo" type="text" class="left" /><br />
+                                        街名：<input id="street_@orderNo" name="street_@orderNo" type="text" class="left" /><br />
+                                        门牌：<input id="door_@orderNo" name="door_@orderNo" type="text" class="left" /><br />
+                                        邮编：<input id="zip_@orderNo" name="zip_@orderNo" type="text" class="left" /><br />
+                                        移动电话：<input id="mobile_@orderNo" name="mobile_@orderNo" type="text" class="left" /><br />
+                                        固定电话：<input id="home_@orderNo" name="home_@orderNo" type="text" class="left" /><br />
+                                        办公电话：<input id="office_@orderNo" name="office_@orderNo" type="text" class="left" /><br />
+                                        电子邮箱：<input id="email_@orderNo" name="email_@orderNo" type="text" class="left" /><br />
+                                        &nbsp;&nbsp;QQ号码：<input id="QQ_@orderNo" name="QQ_@orderNo" type="text" class="left" />
+                                    </td>
+                                    <td style="width:250px;"><textarea id="sendWord_@orderNo" name="sendWord_@orderNo" style="width:230px;height:220px;"></textarea></td>
+                                    <td style="text-align:left;width:300px;">
+                                        商品名称：<span>@Model.orders[orderNo].bookName</span><br />
+                                        商品描述：<span>@Model.orders[orderNo].bookFeature</span><br />
+                                        市场价格：<span>@Model.orders[orderNo].price</span><br />
+                                        <img src="/Images/@Model.orders[orderNo].smallImg" style="width:150px" /><br />
+                                        购买价格：<span>@Model.orders[orderNo].realPrice</span><br />
+                                        <input type="hidden" name="productId_@orderNo" value="@Model.orders[orderNo].theBook" />
+                                        <input type="hidden" name="realPrice_@orderNo" value="@Model.orders[orderNo].realPrice" />
+                                    </td>
+                                </tr>
+                                orderNo++;
+                            }
+                        </table>
+                        <input id="step2last" type="button" value="上一步" onclick="javascript: step1();" />
+                        <input id="step2next" type="button" value="下一步" onclick="javascript: step3();" />
+                    </div>
+                    <div id="paymentInfo" style="display:none;">
+                        <h3>选择付款方式</h3>
+                        <span>（付款金额：@Model.payment.Amount 元）</span><br /><br />
+                        <input type="hidden" name="paymentAmt" value="@Model.payment.Amount" />
+                        <input type="hidden" id="paymentType" name="paymentType" value="-1" />
+                        @foreach (var p in ViewBag.payments)
+                        {
+                            <span><input type="radio" name="pType" id="pt_@p.Id" value="@p.Id" title="@p.TypeName" onclick="javascript:paymentTypeSelected(this);" /><a href="javascript:selePaymentType(@p.Id,'@p.TypeName');"><img src="/Images/@p.SmallImg" style="width:120px;height:30px; vertical-align:middle;" /></a></span><br />
+                        }<br />
+                        <input id="step3last" type="button" value="上一步" onclick="javascript: step2();" />
+                        <input id="step3next" type="button" value="下一步" onclick="javascript: step4();" />
+                    </div>
+                    <div id="assureInfo" style="display:none;">
+                        <h3>确认订单</h3>
+                        <table border="1" style="width:100%;border: 1px solid black;text-align:left;border-width:1px;border-collapse:collapse;">
+                            <tr>
+                                <td>
+                                    客户联系信息：<br />
+                                    移动电话&nbsp;<span id="custMobile">@Model.curCustomer.MobilePhone</span>;&nbsp;&nbsp;&nbsp;&nbsp;家庭电话&nbsp;<span id="custHome">@Model.curCustomer.HomePhone</span>;&nbsp;&nbsp;&nbsp;&nbsp;办公电话&nbsp;<span id="custOffice">@Model.curCustomer.OfficePhone</span>;<br />
+                                    电子邮箱&nbsp;<span id="custEmail">@Model.curCustomer.Email</span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;QQ号码&nbsp;<span id="custQQ">@Model.curCustomer.QqNumber</span>.<br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    订单信息：<br />
+                                    @{
+                                        orderNo = 0;
+                                        foreach (var order in Model.orders)
+                                        {
+                                            <span>订单</span><span>@orderNo</span><span>——收货人：</span><span id="receiverName_@orderNo"></span><span>&nbsp;&nbsp;&nbsp;&nbsp;地址：</span><span id="receiverAddr_@orderNo"></span><br />
+                                            <span>联系电话——移动电话：</span><span id="receiverMobile_@orderNo"></span><span>&nbsp;&nbsp;&nbsp;&nbsp;办公电话：</span><span id="receiverOffice_@orderNo"></span><span>&nbsp;&nbsp;&nbsp;&nbsp;家庭电话：</span><span id="receiverHome_@orderNo"></span><br />
+                                            <span>商品详情——商品名称：</span>@order.bookName<span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span>购买价格：</span>@order.realPrice<span>元</span><br /><br />
+                                            orderNo++;
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    支付方式：<span id="paymentTypeName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总金额：@Model.payment.Amount 元。
+                                </td>
+                            </tr>
+                        </table>
+                        <input id="step4last" type="button" value="上一步" onclick="javascript: step3();" />
+                        <input id="submitForm" type="button" value="确认付款" onclick="javascript: doSubmit();" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
